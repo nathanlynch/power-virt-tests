@@ -1,0 +1,14 @@
+---
+- hosts: victim
+  tasks:
+  - name: Install test kernel
+    copy:
+      src: "{{ vmlinux }}"
+      dest: /boot/vmlinux-dev
+  - name: Set default boot menu entry for next boot
+    command:
+      argv:
+        - grub2-reboot
+        - development kernel
+  - name: Reboot victim and wait for it to come up
+    reboot:
