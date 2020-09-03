@@ -1,0 +1,33 @@
+BUG:
+WARNING: at
+WARNING: CPU:
+INFO: possible recursive locking detected
+ernel BUG at
+list_del corruption
+list_add corruption
+do_IRQ: stack overflow:
+ear stack overflow (cur:
+eneral protection fault
+nable to handle kernel
+ouble fault:
+RTNL: assertion failed
+eek! page_mapcount(page) went negative!
+adness at
+NETDEV WATCHDOG
+ysctl table check failed
+: nobody cared
+IRQ handler type mismatch
+Kernel panic - not syncing:
+Machine Check Exception:
+Machine check events logged
+divide error:
+bounds:
+coprocessor segment overrun:
+invalid TSS:
+segment not present:
+invalid opcode
+alignment check:
+stack segment:
+fpu exception:
+simd exception:
+iret exception:
