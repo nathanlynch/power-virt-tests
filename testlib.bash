@@ -4,14 +4,23 @@ ANSIBLE_CONFIG="config/ansible.cfg"
 export ANSIBLE_CONFIG
 
 kbadpatterns="kernel-badpatterns"
-sut=$(ansible-inventory --host victim --toml | \
-	  awk -F'"' /^ansible_host/'{print $2}')
-sut_user=$(ansible-inventory --host victim --toml | \
-	       awk -F'"' /^ansible_user/'{print $2}')
-machine=$(ansible-inventory --host victim --toml | \
-	      awk -F'"' /^machine/'{print $2}')
-lpar_name=$(ansible-inventory --host victim --toml | \
-		awk -F'"' /^lpar_name/'{print $2}')
+
+workdir="$BATS_TMPDIR"
+victim_vars="$workdir"/victim.variables
+
+victim_var() {
+    local key="$1"
+
+    [ -r "$victim_vars" ] || {
+	ansible-inventory --host victim --toml > "$victim_vars"
+    }
+    awk -F'"' /^"$key"/'{print $2}' "$victim_vars"
+}
+
+sut="$(victim_var ansible_host)"
+sut_user="$(victim_var ansible_user)"
+machine="$(victim_var machine)"
+lpar_name="$(victim_var lpar_name)"
 
 # Check the given kernel log against a list of known patterns that
 # indicate an assertion failure, warning condition, etc. Patterns
