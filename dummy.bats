@@ -19,3 +19,11 @@ load testlib.bash
 @test "expected skip" {
     skip
 }
+
+fn() {
+    ssh "$sut_user"@"$sut" true
+}
+
+@test "Use testlib_run" {
+    testlib_run fn
+}
