@@ -109,7 +109,6 @@ testlib_run() {
 # bats hooks
 
 setup_file() {
-    :
     testlib_setup_file
 }
 
