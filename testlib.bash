@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ANSIBLE_CONFIG="config/ansible.cfg"
+export ANSIBLE_CONFIG
 
 kbadpatterns="kernel-badpatterns"
 
