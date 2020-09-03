@@ -21,6 +21,12 @@ sut_user="$(victim_var ansible_user)"
 machine="$(victim_var machine)"
 lpar_name="$(victim_var lpar_name)"
 
+__testlib_log() {
+    local msg="$1"
+
+    printf "# %s\n" "$msg" >&3
+}
+
 # Check the given kernel log against a list of known patterns that
 # indicate an assertion failure, warning condition, etc. Patterns
 # lifted from the output of 'abrt-dump-oops -m'.
