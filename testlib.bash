@@ -74,9 +74,9 @@ testlib_sut_reachable() {
 testlib_add_mem() {
     local mem_mb="$1"
 
-    ansible -m raw \
-	    -a "chhwres -m $machine -p $lpar_name -r mem -o a -q $mem_mb" \
-	    hmc
+    __testlib_ansible_raw \
+	"chhwres -m $machine -p $lpar_name -r mem -o a -q $mem_mb" \
+	hmc
 }
 
 testlib_write_sut_kmsg() {
@@ -94,9 +94,9 @@ __testlib_mark_test_end() {
 testlib_remove_mem() {
     local mem_mb="$1"
 
-    ansible -m raw \
-	    -a "chhwres -m $machine -p $lpar_name -r mem -o r -q $mem_mb" \
-	    hmc
+    __testlib_ansible_raw \
+	"chhwres -m $machine -p $lpar_name -r mem -o r -q $mem_mb" \
+	hmc
 }
 
 testlib_common_preconditions() {
