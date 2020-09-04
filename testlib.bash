@@ -75,7 +75,7 @@ testlib_add_mem() {
     local mem_mb="$1"
 
     __testlib_ansible_raw \
-	"chhwres -m $machine -p $lpar_name -r mem -o a -q $mem_mb" \
+	"chhwres -w 1 -m $machine -p $lpar_name -r mem -o a -q $mem_mb" \
 	hmc
 }
 
@@ -95,7 +95,7 @@ testlib_remove_mem() {
     local mem_mb="$1"
 
     __testlib_ansible_raw \
-	"chhwres -m $machine -p $lpar_name -r mem -o r -q $mem_mb" \
+	"chhwres -w 1 -m $machine -p $lpar_name -r mem -o r -q $mem_mb" \
 	hmc
 }
 
