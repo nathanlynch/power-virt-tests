@@ -28,6 +28,20 @@ __testlib_log() {
     printf "# %s\n" "$msg" >&3
 }
 
+__testlib_run_ansible() {
+    local logdir="$workdir"/ansible-logs
+    mkdir -p "$logdir"
+    ansible -t "$logdir" "$@"
+}
+
+__testlib_ansible_raw() {
+    local cmd="$1" ; shift
+    local host="$1" ; shift
+    local args=(-m raw -a "$cmd" "$host")
+
+    __testlib_run_ansible "${args[@]}"
+}
+
 # Check the given kernel log against a list of known patterns that
 # indicate an assertion failure, warning condition, etc. Patterns
 # lifted from the output of 'abrt-dump-oops -m'.
