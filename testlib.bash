@@ -4,8 +4,16 @@
 #   load testlib.bash
 # in any .bats testcase definition
 
-ANSIBLE_CONFIG="config/ansible.cfg"
-export ANSIBLE_CONFIG
+__testlib_log() {
+    local msg="$1"
+
+    printf "# %s\n" "$msg" >&3
+}
+
+[ -v ANSIBLE_CONFIG ] || {
+    __testlib_log "ANSIBLE_CONFIG is unset"
+    false
+}
 
 kbadpatterns="kernel-badpatterns"
 
@@ -25,12 +33,6 @@ sut="$(victim_var ansible_host)"
 sut_user="$(victim_var ansible_user)"
 machine="$(victim_var machine)"
 lpar_name="$(victim_var lpar_name)"
-
-__testlib_log() {
-    local msg="$1"
-
-    printf "# %s\n" "$msg" >&3
-}
 
 __testlib_run_ansible() {
     local logdir="$workdir"/ansible-logs
