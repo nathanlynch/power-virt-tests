@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Usage:
+#   load testlib.bash
+# in any .bats testcase definition
+
 ANSIBLE_CONFIG="config/ansible.cfg"
 export ANSIBLE_CONFIG
 
@@ -127,7 +131,8 @@ testlib_run() {
 }
 
 ################################################################
-# bats hooks
+# bats hooks:
+# https://github.com/bats-core/bats-core#setup-and-teardown-pre--and-post-test-hooks
 
 setup_file() {
     testlib_setup_file
