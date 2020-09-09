@@ -1,2 +1,0 @@
-victim ansible_host=ltcalpine2-lp9.aus.stglabs.ibm.com ansible_user=root ansible_python_interpreter=/usr/bin/python3 machine=ltcalpine2-SN10A7ACV lpar_name=ltcalpine2-lp9
-hmc ansible_host=ltchmcv2.aus.stglabs.ibm.com ansible_user=hscroot
