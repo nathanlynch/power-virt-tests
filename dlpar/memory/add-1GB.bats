@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-load testlib.bash
+load ../../testlib.bash
 
 add_1GB() {
     testlib_add_mem 1024
