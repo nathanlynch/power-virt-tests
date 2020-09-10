@@ -10,8 +10,13 @@ __testlib_log() {
     printf "# %s\n" "$msg" >&3
 }
 
+[ -r ./testlib.bash ] || {
+    __testlib_log "Test suite must be run from power-virt-tests directory."
+    false
+}
+
 [ -v ANSIBLE_CONFIG ] || {
-    __testlib_log "ANSIBLE_CONFIG is unset"
+    __testlib_log "ANSIBLE_CONFIG is unset."
     false
 }
 
