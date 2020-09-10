@@ -127,7 +127,12 @@ __testlib_wait_for_host_up() {
 }
 
 __testlib_boot_victim() {
-    # TODO: Handle victim that is already up.
+    run __testlib_ansible_raw \
+	"lssyscfg -r lpar -m $machine --filter lpar_names=$lpar_name -F state" \
+	hmc
+    [ "$status" -eq 0 ]
+    [[ "${lines[1]}" == *"Running"* ]] && return 0
+
     # TODO: Specify profile instead of relying on defaults.
     __testlib_log "Activating $lpar_name"
     __testlib_ansible_raw \
