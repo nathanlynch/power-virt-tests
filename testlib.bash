@@ -105,6 +105,37 @@ testlib_remove_mem() {
 	hmc
 }
 
+__testlib_wait_for_host_up() {
+    local host="$1" ; shift
+    local deadline=300
+    local count=5
+
+    printf "Waiting for %s to come up (count=%s, deadline=%s)\n" "$host" \
+	   "$count" "$deadline"
+
+    ping -q -w "$deadline" -c "$count" "$host"
+    testlib_sut_reachable
+}
+
+__testlib_boot_victim() {
+    # TODO: Handle victim that is already up.
+    # TODO: Specify profile instead of relying on defaults.
+    __testlib_ansible_raw \
+	"chsysstate -r lpar -m $machine -n $lpar_name -o on" \
+	hmc
+    __testlib_wait_for_host_up "$sut"
+}
+
+__testlib_halt_victim() {
+    # TODO: Try '--immed'?
+    __testlib_ansible_raw \
+	"chsysstate -r lpar -m $machine -n $lpar_name -o osshutdown" \
+	hmc
+    # TODO: Wait for
+    #   lssyscfg -r lpar -m $machine --filter "lpar_names=$lpar_name" -F state
+    # to yield 'Not Activated'.
+}
+
 testlib_common_preconditions() {
     :
 }
@@ -115,7 +146,16 @@ testlib_common_postconditions() {
 
 testlib_setup_file() {
     getent hosts "$sut"
-    # boot the victim
+    __testlib_boot_victim
+}
+
+__testlib_set_next_boot() {
+    ssh "$sut_user"@"$sut" grub2-reboot "$1"
+}
+
+testlib_teardown_file() {
+    __testlib_set_next_boot "development kernel"
+    __testlib_halt_victim
 }
 
 testlib_setup() {
@@ -149,6 +189,5 @@ teardown() {
 }
 
 teardown_file() {
-    :
-    # halt the victim
+    testlib_teardown_file
 }
