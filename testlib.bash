@@ -42,6 +42,7 @@ sut="$(victim_var ansible_host)"
 sut_user="$(victim_var ansible_user)"
 machine="$(victim_var machine)"
 lpar_name="$(victim_var lpar_name)"
+lpar_profile="$(victim_var lpar_profile)"
 
 __testlib_run_ansible() {
     local logdir="$workdir"/ansible-logs
@@ -136,7 +137,7 @@ __testlib_boot_victim() {
     # TODO: Specify profile instead of relying on defaults.
     __testlib_log "Activating $lpar_name"
     __testlib_ansible_raw \
-	"chsysstate -r lpar -m $machine -n $lpar_name -o on" \
+	"chsysstate -r lpar -m $machine -n $lpar_name -o on -f $lpar_profile" \
 	hmc || {
 	__testlib_log "Activation failed"
 	false
