@@ -31,11 +31,17 @@ victim_vars="$workdir"/victim.variables
 
 victim_var() {
     local key="$1"
+    local value
 
     [ -r "$victim_vars" ] || {
 	ansible-inventory --host victim --toml > "$victim_vars"
     }
-    awk -F'"' /^"$key"/'{print $2}' "$victim_vars"
+    value="$(awk -F'"' /^"$key"/'{print $2}' "$victim_vars")"
+    [ -n "$value" ] || {
+	__testlib_log "No value for key $key"
+	false
+    }
+    echo "$value"
 }
 
 sut="$(victim_var ansible_host)"
@@ -214,4 +220,5 @@ teardown() {
 
 teardown_file() {
     testlib_teardown_file
+    rm -f "$victim_vars"
 }
