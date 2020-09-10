@@ -22,6 +22,8 @@ __testlib_log() {
     false
 }
 
+__testlib_log "ANSIBLE_CONFIG = \"$ANSIBLE_CONFIG\""
+
 kbadpatterns="kernel-badpatterns"
 
 workdir="$BATS_TMPDIR"
@@ -127,9 +129,13 @@ __testlib_wait_for_host_up() {
 __testlib_boot_victim() {
     # TODO: Handle victim that is already up.
     # TODO: Specify profile instead of relying on defaults.
+    __testlib_log "Activating $lpar_name"
     __testlib_ansible_raw \
 	"chsysstate -r lpar -m $machine -n $lpar_name -o on" \
-	hmc
+	hmc || {
+	__testlib_log "Activation failed"
+	false
+    }
     __testlib_wait_for_host_up "$sut"
 }
 
