@@ -127,9 +127,8 @@ __testlib_boot_victim() {
 }
 
 __testlib_halt_victim() {
-    # TODO: Try '--immed'?
     __testlib_ansible_raw \
-	"chsysstate -r lpar -m $machine -n $lpar_name -o osshutdown" \
+	"chsysstate -r lpar -m $machine -n $lpar_name -o osshutdown --immed" \
 	hmc
     # TODO: Wait for
     #   lssyscfg -r lpar -m $machine --filter "lpar_names=$lpar_name" -F state
