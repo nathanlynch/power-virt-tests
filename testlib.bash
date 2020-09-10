@@ -4,6 +4,8 @@
 #   load testlib.bash
 # in any .bats testcase definition
 
+playbooks="./playbooks"
+
 __testlib_log() {
     local msg="$1"
 
@@ -154,7 +156,7 @@ testlib_setup_file() {
 }
 
 __testlib_set_next_boot() {
-    ssh "$sut_user"@"$sut" grub2-reboot "$1"
+    ansible-playbook "$playbooks"/grub2-reboot-dev-kernel.yml
 }
 
 testlib_teardown_file() {
