@@ -137,9 +137,15 @@ __testlib_halt_victim() {
     __testlib_ansible_raw \
 	"chsysstate -r lpar -m $machine -n $lpar_name -o osshutdown --immed" \
 	hmc
-    # TODO: Wait for
-    #   lssyscfg -r lpar -m $machine --filter "lpar_names=$lpar_name" -F state
-    # to yield 'Not Activated'.
+    while : ; do
+	run __testlib_ansible_raw \
+	    "lssyscfg -r lpar -m $machine --filter lpar_names=$lpar_name -F state" \
+	    hmc
+	[ "$status" -eq 0 ]
+	[[ "${lines[1]}" != *"Not Activated"* ]] || break
+	__testlib_log "Waiting for $lpar_name to halt, current state: ${lines[1]}"
+	sleep 1
+    done
 }
 
 testlib_common_preconditions() {
