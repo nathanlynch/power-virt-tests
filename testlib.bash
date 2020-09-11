@@ -194,6 +194,7 @@ testlib_setup() {
 
 testlib_teardown() {
     __testlib_mark_test_end "$BATS_TEST_DESCRIPTION ($BATS_TEST_FILENAME:$BATS_TEST_NUMBER)"
+    ssh "$sut_user"@"$sut" dmesg | tail -n 5
 }
 
 testlib_run() {
