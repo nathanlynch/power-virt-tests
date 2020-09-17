@@ -91,6 +91,10 @@ __testlib_hmc_cmd() {
     __testlib_ssh_cmd "$hmc_user" "$hmc_host" "$@"
 }
 
+__testlib_sut_cmd() {
+    __testlib_ssh_cmd "$sut_user" "$sut" "$@"
+}
+
 # Check the given kernel log against a list of known patterns that
 # indicate an assertion failure, warning condition, etc. Patterns
 # lifted from the output of 'abrt-dump-oops -m'.
