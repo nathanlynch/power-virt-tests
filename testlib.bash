@@ -81,6 +81,16 @@ __testlib_ansible_raw() {
     __testlib_run_ansible "${args[@]}"
 }
 
+__testlib_ssh_cmd() {
+    local user="$1" ; shift
+    local host="$1" ; shift
+    ssh "$host" "$@"
+}
+
+__testlib_hmc_cmd() {
+    __testlib_ssh_cmd "$hmc_user" "$hmc_host" "$@"
+}
+
 # Check the given kernel log against a list of known patterns that
 # indicate an assertion failure, warning condition, etc. Patterns
 # lifted from the output of 'abrt-dump-oops -m'.
