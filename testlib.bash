@@ -64,6 +64,9 @@ machine="$(victim_var machine)"
 lpar_name="$(victim_var lpar_name)"
 lpar_profile="$(victim_var lpar_profile)"
 
+hmc_host="$(hmc_var ansible_host)"
+hmc_user="$(hmc_var ansible_user)"
+
 __testlib_run_ansible() {
     local logdir="$workdir"/ansible-logs
     mkdir -p "$logdir"
