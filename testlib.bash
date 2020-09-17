@@ -104,7 +104,7 @@ testlib_kernel_log_good() {
     local ret=0
     local klog="$BATS_TMPDIR"/klog."$BATS_TEST_NUMBER"
 
-    ssh "$sut_user"@"$sut" dmesg > "$klog"
+    __testlib_sut_cmd dmesg > "$klog"
 
     grep -q -F -f "$kbadpatterns" "$klog" && {
 	local count
