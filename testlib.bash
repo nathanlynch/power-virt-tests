@@ -28,20 +28,34 @@ kbadpatterns="kernel-badpatterns"
 
 workdir="$BATS_TMPDIR"
 victim_vars="$workdir"/victim.variables
+hmc_vars="$workdir"/hmc.variables
 
-victim_var() {
-    local key="$1"
+host_var() {
+    local key="$1" ; shift
+    local host_alias="$1" ; shift
+    local var_cache="$1" ; shift
     local value
 
-    [ -r "$victim_vars" ] || {
-	ansible-inventory --host victim --toml > "$victim_vars"
-    }
-    value="$(awk -F'"' /^"$key"/'{print $2}' "$victim_vars")"
+    [ -r "$var_cache" ] || \
+	ansible-inventory --host "$host_alias" --toml > "$var_cache"
+    value="$(awk -F'"' /^"$key"/'{print $2}' "$var_cache")"
     [ -n "$value" ] || {
-	__testlib_log "No value for key $key"
+	__testlib_log "No value for key $key for host $host_alias"
 	false
     }
     echo "$value"
+}
+
+victim_var() {
+    local key="$1"
+
+    host_var "$key" victim "$victim_vars"
+}
+
+hmc_var() {
+    local key="$1"
+
+    host_var "$key" hmc "$hmc_vars"
 }
 
 sut="$(victim_var ansible_host)"
