@@ -124,13 +124,6 @@ testlib_sut_reachable() {
     ansible -m ping victim
 }
 
-testlib_add_mem() {
-    local mem_mb="$1"
-
-    __testlib_hmc_cmd chhwres -w 1 -m "$machine" -p "$lpar_name" \
-		      -r mem -o a -q "$mem_mb"
-}
-
 testlib_write_sut_kmsg() {
     echo "$1" | __testlib_sut_cmd tee /dev/kmsg >/dev/null
 }
@@ -143,11 +136,27 @@ __testlib_mark_test_end() {
     testlib_write_sut_kmsg "TEST END: $1"
 }
 
+testlib_dlpar_mem_cmd() {
+    local op="$1" ; shift
+    local mem_mb="$1" ; shift
+
+    # Note -w 1 is a temp hack to force earlier failure on crash
+    # etc. It won't be suitable for larger values (more than a few
+    # GB).
+    __testlib_hmc_cmd chhwres -w 1 -m "$machine" -p "$lpar_name" \
+		      -r mem -o "$op" -q "$mem_mb"
+}
+
+testlib_add_mem() {
+    local mem_mb="$1"
+
+    testlib_dlpar_mem_cmd a "$mem_mb"
+}
+
 testlib_remove_mem() {
     local mem_mb="$1"
 
-    __testlib_hmc_cmd chhwres -w 1 -m "$machine" -p "$lpar_name" \
-		      -r mem -o r -q "$mem_mb"
+    testlib_dlpar_mem_cmd r "$mem_mb"
 }
 
 __testlib_wait_for_host_up() {
