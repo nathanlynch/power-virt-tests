@@ -132,7 +132,7 @@ testlib_add_mem() {
 }
 
 testlib_write_sut_kmsg() {
-    echo "$1" | ssh "$sut_user"@"$sut" tee /dev/kmsg >/dev/null
+    echo "$1" | __testlib_sut_cmd tee /dev/kmsg >/dev/null
 }
 
 __testlib_mark_test_begin() {
@@ -223,7 +223,7 @@ testlib_setup() {
 
 testlib_teardown() {
     __testlib_mark_test_end "$BATS_TEST_DESCRIPTION ($BATS_TEST_FILENAME:$BATS_TEST_NUMBER)"
-    ssh "$sut_user"@"$sut" dmesg | tail -n 5
+    __testlib_sut_cmd dmesg | tail -n 5
 }
 
 testlib_run() {
