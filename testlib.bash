@@ -123,9 +123,8 @@ testlib_sut_reachable() {
 testlib_add_mem() {
     local mem_mb="$1"
 
-    __testlib_ansible_raw \
-	"chhwres -w 1 -m $machine -p $lpar_name -r mem -o a -q $mem_mb" \
-	hmc
+    __testlib_hmc_cmd chhwres -w 1 -m "$machine" -p "$lpar_name" \
+		      -r mem -o a -q "$mem_mb"
 }
 
 testlib_write_sut_kmsg() {
@@ -143,9 +142,8 @@ __testlib_mark_test_end() {
 testlib_remove_mem() {
     local mem_mb="$1"
 
-    __testlib_ansible_raw \
-	"chhwres -w 1 -m $machine -p $lpar_name -r mem -o r -q $mem_mb" \
-	hmc
+    __testlib_hmc_cmd chhwres -w 1 -m "$machine" -p "$lpar_name" \
+		      -r mem -o r -q "$mem_mb"
 }
 
 __testlib_wait_for_host_up() {
