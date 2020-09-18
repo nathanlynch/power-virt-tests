@@ -228,17 +228,17 @@ testlib_teardown_file() {
 
 testlib_setup() {
     __testlib_mark_test_begin "$BATS_TEST_DESCRIPTION ($BATS_TEST_FILENAME:$BATS_TEST_NUMBER)"
+    testlib_common_preconditions
 }
 
 testlib_teardown() {
+    testlib_common_postconditions
     __testlib_mark_test_end "$BATS_TEST_DESCRIPTION ($BATS_TEST_FILENAME:$BATS_TEST_NUMBER)"
     __testlib_sut_cmd dmesg | tail -n 5
 }
 
 testlib_run() {
-    testlib_common_preconditions
     $1
-    testlib_common_postconditions
 }
 
 ################################################################
