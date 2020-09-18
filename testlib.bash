@@ -70,7 +70,8 @@ hmc_user="$(hmc_var ansible_user)"
 __testlib_ssh_cmd() {
     local user="$1" ; shift
     local host="$1" ; shift
-    ssh "$host" "$@"
+
+    ssh "$user"@"$host" "$@"
 }
 
 __testlib_hmc_cmd() {
