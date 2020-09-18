@@ -67,20 +67,6 @@ lpar_profile="$(victim_var lpar_profile)"
 hmc_host="$(hmc_var ansible_host)"
 hmc_user="$(hmc_var ansible_user)"
 
-__testlib_run_ansible() {
-    local logdir="$workdir"/ansible-logs
-    mkdir -p "$logdir"
-    ansible -t "$logdir" "$@"
-}
-
-__testlib_ansible_raw() {
-    local cmd="$1" ; shift
-    local host="$1" ; shift
-    local args=(-m raw -a "$cmd" "$host")
-
-    __testlib_run_ansible "${args[@]}"
-}
-
 __testlib_ssh_cmd() {
     local user="$1" ; shift
     local host="$1" ; shift
