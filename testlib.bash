@@ -237,10 +237,6 @@ testlib_teardown() {
     __testlib_sut_cmd dmesg | tail -n 5
 }
 
-testlib_run() {
-    $1
-}
-
 ################################################################
 # bats hooks:
 # https://github.com/bats-core/bats-core#setup-and-teardown-pre--and-post-test-hooks
