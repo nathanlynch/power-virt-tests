@@ -19,7 +19,7 @@ load ../../testlib.bash
 #
 # The OS return code is 255.
 
-@test "attempt to set memory to 256MB (failure expected)" {
+@test "reject attempt to set memory to 256MB" {
     run testlib_set_mem 256
     [ "$status" -eq 1 ]
     [[ "${lines[0]}" =~ ^"HSCL2932 " ]]
