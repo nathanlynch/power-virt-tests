@@ -123,9 +123,23 @@ __testlib_mark_test_end() {
     testlib_write_sut_kmsg "TEST END: $1"
 }
 
+__testlib_wait_for_rmc_up() {
+    while : ; do
+	run __testlib_hmc_cmd lssyscfg -r lpar -m "$machine" \
+	    --filter lpar_names="$lpar_name" -F rmc_state
+
+	[ "$status" -eq 0 ]
+	[ "$output" = "active" ] && break
+	__testlib_log "Waiting for RMC connection; current state: $output"
+	sleep 1
+    done
+}
+
 testlib_dlpar_mem_cmd() {
     local op="$1" ; shift
     local mem_mb="$1" ; shift
+
+    __testlib_wait_for_rmc_up
 
     # Note -w 1 is a temp hack to force earlier failure on crash
     # etc. It won't be suitable for larger values (more than a few
