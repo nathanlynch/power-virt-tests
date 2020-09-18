@@ -159,6 +159,12 @@ testlib_remove_mem() {
     testlib_dlpar_mem_cmd r "$mem_mb"
 }
 
+testlib_set_mem() {
+    local mem_mb="$1"
+
+    testlib_dlpar_mem_cmd s "$mem_mb"
+}
+
 __testlib_wait_for_host_up() {
     local host="$1" ; shift
     local deadline=300
