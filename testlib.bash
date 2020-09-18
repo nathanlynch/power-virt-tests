@@ -178,17 +178,15 @@ __testlib_wait_for_host_up() {
 }
 
 __testlib_boot_victim() {
-    run __testlib_ansible_raw \
-	"lssyscfg -r lpar -m $machine --filter lpar_names=$lpar_name -F state" \
-	hmc
+    run __testlib_hmc_cmd lssyscfg -r lpar -m "$machine" \
+	--filter lpar_names="$lpar_name" -F state
     [ "$status" -eq 0 ]
-    [[ "${lines[1]}" == *"Running"* ]] && return 0
+    [ "$output" = "Running" ] && return 0
 
     # TODO: Specify profile instead of relying on defaults.
     __testlib_log "Activating $lpar_name"
-    __testlib_ansible_raw \
-	"chsysstate -r lpar -m $machine -n $lpar_name -o on -f $lpar_profile" \
-	hmc || {
+    __testlib_hmc_cmd chsysstate -r lpar -m "$machine" -n "$lpar_name" \
+		      -o on -f "$lpar_profile" || {
 	__testlib_log "Activation failed"
 	false
     }
@@ -196,16 +194,14 @@ __testlib_boot_victim() {
 }
 
 __testlib_halt_victim() {
-    __testlib_ansible_raw \
-	"chsysstate -r lpar -m $machine -n $lpar_name -o osshutdown --immed" \
-	hmc
+    __testlib_hmc_cmd chsysstate -r lpar -m "$machine" \
+		      -n "$lpar_name" -o osshutdown --immed
     while : ; do
-	run __testlib_ansible_raw \
-	    "lssyscfg -r lpar -m $machine --filter lpar_names=$lpar_name -F state" \
-	    hmc
+	run __testlib_hmc_cmd lssyscfg -r lpar -m "$machine" \
+	    --filter lpar_names="$lpar_name" -F state
 	[ "$status" -eq 0 ]
-	[[ "${lines[1]}" != *"Not Activated"* ]] || break
-	__testlib_log "Waiting for $lpar_name to halt, current state: ${lines[1]}"
+	[ "$output" = "Not Activated" ] && break
+	__testlib_log "Waiting for $lpar_name to halt, current state: $output"
 	sleep 1
     done
 }
