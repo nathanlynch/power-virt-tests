@@ -22,8 +22,6 @@ __testlib_log() {
     false
 }
 
-__testlib_log "ANSIBLE_CONFIG = \"$ANSIBLE_CONFIG\""
-
 kbadpatterns="kernel-badpatterns"
 
 workdir="$BATS_TMPDIR"
