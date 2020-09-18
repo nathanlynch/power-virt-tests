@@ -129,7 +129,7 @@ __testlib_wait_for_rmc_up() {
 	[ "$status" -eq 0 ]
 	[ "$output" = "active" ] && break
 	__testlib_log "Waiting for RMC connection; current state: $output"
-	sleep 1
+	sleep 5
     done
 }
 
@@ -201,7 +201,7 @@ __testlib_halt_victim() {
 	[ "$status" -eq 0 ]
 	[ "$output" = "Not Activated" ] && break
 	__testlib_log "Waiting for $lpar_name to halt, current state: $output"
-	sleep 1
+	sleep 5
     done
 }
 
